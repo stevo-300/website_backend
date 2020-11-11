@@ -1,0 +1,31 @@
+const fastify = require('fastify')()
+const MONGO_URI = 'mongodb://localhost:27017/dreamspace'
+
+// fastify.register(require('fastify-mongoose-driver'), {
+// 	uri: MONGO_URI,
+//  settings: {
+//		useNewUrlParser: true,
+//		config: {
+//			autoIndex: true
+//		}
+//	},
+//	models: []
+//   }, err => {
+// 	if (err) throw err
+//   })
+
+fastify.register(require('fastify-jwt'), {
+	secret: 'JackAndBea'
+})
+
+fastify.register(require('./routes/authentication'))
+fastify.register(require('./routes/general'))
+
+fastify.listen(4000,(err, address) => {
+	if (err) {
+		fastify.log.error(err)
+		process.exit(1)
+	}
+	fastify.log.info(`server listening on ${address}`)
+})
+ 
